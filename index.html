@@ -120,11 +120,23 @@
 				console.log(servers[index].name, 'is up.');	
 
 				$('.systems').append('<li><a href="'+servers[index].link+'" target="_blank">'+servers[index].name+'</a> <span class="status operational" data-l10n-id="operational">operational</span></li>');
+
+				updateStatus();
 			}
+			
 			function isDown (index) {
 				console.log(servers[index].name, 'is down.');
 				$('.systems').append('<li><a href="'+servers[index].link+'" target="_blank">'+servers[index].name+'</a> <span class="status degraded performance" data-l10n-id="degraded-performance">degraded performance</span></li>');
 				downCount++;
+				updateStatus();
+			}
+
+			function updateStatus () {
+				if (downCount) {
+					$('.operational-outlet').html('<div class="panel degraded performance">Degraded Performance</div>');
+				} else {
+					$('.operational-outlet').html('<div class="panel operational">All systems are operational.</div>');
+				}
 			}
 
 			var servers = [
@@ -169,14 +181,6 @@
 				servers.forEach(function (server, index) {
 					$('body').append('<img style="opacity:0;" src="'+server.test+'" onload="isUp('+index+')" onerror="isDown('+index+')">');
 				});
-
-				setTimeout(function () {
-					if (downCount) {
-						$('.operational-outlet').html('<div class="panel degraded performance">Degraded Performance</div>');
-					} else {
-						$('.operational-outlet').html('<div class="panel operational">All systems are operational.</div>');
-					}
-				}, 750);
 			});
 
 		</script>
